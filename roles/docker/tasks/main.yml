@@ -1,0 +1,50 @@
+---
+- name: install pre-reqs
+  apt:
+    name: "{{item}}"
+    state: present
+  with_items:
+    - "ca-certificates"
+    - "curl"
+    - "software-properties-common"
+
+- name: docker repo key
+  apt_key:
+    url: https://download.docker.com/linux/ubuntu/gpg
+    state: present
+
+- name: docker repo install
+  apt_repository:
+    repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable
+    state: present
+
+#- name: upgrade all packages
+#  apt:
+#    upgrade: dist
+#    update_cache: yes
+
+- name: install docker
+  apt:
+    name: docker-ce
+    state: present
+    update_cache: yes
+
+- name: start service
+  service:
+    name: docker
+    state: started
+    enabled: true
+
+- name: ensure docker-py is installed
+  apt:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    # - "python-docker"
+    - "python3-docker"
+
+- name: add user to docker group
+  user:
+    name: ryan
+    group: docker
+    append: yes

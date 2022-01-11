@@ -1,0 +1,37 @@
+---
+- hosts: localhost
+  become: true
+  tasks:
+    - name: update OS
+      apt:
+       name: "*"
+       state: latest
+       update_cache: yes
+
+    - name: install nodesource
+      comand: "curl -fsSL https://deb.nodesource.com/setup_17.x | sudo -E bash -"
+    
+    - name: install my stuff
+      apt:
+        name: 
+          - snapd
+          - ansible
+          - openjdk-8-jdk
+          - nodejs
+          - build-essential
+        state: present
+    
+    - name: install idea
+      snap:
+        name:
+          - intellij-idea-community
+          - pycharm-community
+        classic: yes
+        state: present
+  roles:
+    - docker
+
+  
+    
+
+      
