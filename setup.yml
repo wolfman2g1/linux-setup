@@ -7,6 +7,11 @@
        name: "*"
        state: latest
        update_cache: yes
+    - name: good stuff to have
+      apt:
+       name:
+         - curl
+       state: present
 
     - name: install nodesource
       command: "curl -fsSL https://deb.nodesource.com/setup_17.x | sudo -E bash -"
