@@ -13,8 +13,21 @@
          - curl
        state: present
 
-    - name: install nodesource
-      command: "curl -fsSL https://deb.nodesource.com/setup_17.x | sudo -E bash -"
+    - name: install nodesource gpg
+      apt_key:
+        url: https://deb.nodesource.com/gpgkey/nodesource.gpg.key
+        state: present
+      
+    - name: "Add nodejs 13.x ppa for apt repo"
+      apt_repository:
+        repo: deb https://deb.nodesource.com/node_17.x bionic main
+        update_cache: yes
+    
+    - name: "Install nodejs"
+      apt:
+        update_cache: yes
+        name: nodejs
+        state: present
     
     - name: install my stuff
       apt:
@@ -34,7 +47,7 @@
         classic: yes
         state: present
     - name: install oh-my-bash
-      command: '"sh -c "$(curl -fsSL https://raw.github.com/ohmybash/oh-my-bash/master/tools/install.sh)'
+      command: '"/usr/bin/sh -c "$(/usr/bin/curl -fsSL https://raw.github.com/ohmybash/oh-my-bash/master/tools/install.sh)'
   roles:
     - docker
 
